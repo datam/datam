@@ -3,10 +3,10 @@ package disk
 import "os"
 import "errors"
 
-var errInvalidBuffer = errors.New("Buffer not expected size")
-var errInvalidDiskSize = errors.New("Disk length aligned to block size")
-var errInvalidBlockNumber = errors.New("Block Number is beyond max length")
-var errInsufficientBufferSpace = errors.New("Buffer provided is not the expected length")
+var ErrInvalidBuffer = errors.New("Buffer not expected size")
+var ErrInvalidDiskSize = errors.New("Disk length aligned to block size")
+var ErrInvalidBlockNumber = errors.New("Block Number is beyond max length")
+var ErrInsufficientBufferSpace = errors.New("Buffer provided is not the expected length")
 
 const DefaultBlockSize = 4096
 
@@ -67,7 +67,7 @@ func OpenDisk(p string) (d *disk, err error) {
 	}
 
 	if d.length%d.blockSize != 0 {
-		return nil, errInvalidDiskSize
+		return nil, ErrInvalidDiskSize
 	}
 
 	d.numBlocks = d.length / d.blockSize
@@ -84,11 +84,11 @@ func (d *disk) BlockSize() (blockSize uint64) {
 
 func (d *disk) Read(b uint64, p []byte) error {
 	if b > d.numBlocks {
-		return errInvalidBlockNumber
+		return ErrInvalidBlockNumber
 	}
 
 	if len(p) < int(d.blockSize) {
-		return errInsufficientBufferSpace
+		return ErrInsufficientBufferSpace
 	}
 
 	_, err := d.f.ReadAt(p, int64(d.blockSize*b))
@@ -101,11 +101,11 @@ func (d *disk) Read(b uint64, p []byte) error {
 
 func (d *disk) Write(b uint64, p []byte) error {
 	if b > d.numBlocks {
-		return errInvalidBlockNumber
+		return ErrInvalidBlockNumber
 	}
 
 	if len(p) != int(d.blockSize) {
-		return errInsufficientBufferSpace
+		return ErrInsufficientBufferSpace
 	}
 
 	_, err := d.f.WriteAt(p, int64(b))
