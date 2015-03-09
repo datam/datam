@@ -2,6 +2,7 @@ package disk
 
 import "testing"
 import "os"
+import "math/rand"
 
 const numBlocks = 1000
 const blockSize = 4096
@@ -34,6 +35,15 @@ func TestDiskCreate(t *testing.T) {
 	}
 }
 
+func randomPattern(seed int, p []byte) {
+
+}
+
 func TestDiskReadWrite(t *testing.T) {
+	var d, err = CreateDisk(filePath, numBlocks, blockSize)
+
+	if err != nil {
+		f.Fatalf("Failed to Create disk!")
+	}
 
 }
