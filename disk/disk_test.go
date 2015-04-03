@@ -35,15 +35,26 @@ func TestDiskCreate(t *testing.T) {
 	}
 }
 
-func randomPattern(seed int, p []byte) {
-
+func randomPattern(p [blockSize]byte) {
+	for i := 0; i < len(p); i++ {
+		p[i] = byte(rand.Int())
+	}
 }
 
 func TestDiskReadWrite(t *testing.T) {
 	var d, err = CreateDisk(filePath, numBlocks, blockSize)
+	var p [blockSize]byte
+	var p1 [blockSize]byte
 
 	if err != nil {
 		f.Fatalf("Failed to Create disk!")
 	}
 
+	randomPattern(p)
+	d.Write(1, p)
+	d.Read(1, p1)
+
+	if bytes.Compare(p, p1) != 0 {
+		t.Fatalf("Read Write comparison failed!")
+	}
 }
