@@ -3,9 +3,8 @@ package disk
 import "os"
 import "errors"
 
-var ErrInvalidBuffer = errors.New("Buffer not expected size")
 var ErrInvalidDiskSize = errors.New("Disk length aligned to block size")
-var ErrInvalidBlockNumber = errors.New("Block Number is beyond max length")
+var ErrInvalidBlockNumber = errors.New("Block number is beyond disk size")
 var ErrInsufficientBufferSpace = errors.New("Buffer provided is not the expected length")
 
 const DefaultBlockSize = 4096
